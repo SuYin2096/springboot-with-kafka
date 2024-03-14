@@ -1,5 +1,7 @@
 package com.scarlettech.springbootwithkafka.controller;
 
+import com.scarlettech.springbootwithkafka.payload.Student;
+import com.scarlettech.springbootwithkafka.producer.KafkaJsonProducer;
 import com.scarlettech.springbootwithkafka.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,19 @@ public class MessageController {
 
     private final KafkaProducer kafkaProducer;
 
+    private final KafkaJsonProducer kafkaJsonProducer;
+
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody String mesg){
 
         kafkaProducer.sendMessage(mesg);
         return ResponseEntity.ok("Message queued successfully.");
+    }
+
+    @PostMapping("/json")
+    public ResponseEntity<String> sendJsonMessage(@RequestBody Student mesg){
+
+        kafkaJsonProducer.sendMessage(mesg);
+        return ResponseEntity.ok("Message queued successfully as JSON.");
     }
 }
